@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "מודעה חדשה";
+    ViewBag.header = "איזה כיף! המודעה שלך כבר באויר";
+}
+
+
+@model MyAspProject.Models.UserProductViewModel
+@{
+    Layout = "layoutWithoutLinks";
+}
+
+<div>
+
+    <h4> אלו פרטי המודעה כפי ששלחת בטופס </h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.Id)
+        </dd>
+        <dt>
+            כותרת
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.Title)
+        </dd>
+        <dt>
+            תיאור קצר
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.ShortDescription)
+        </dd>
+        <dt>
+            תיאור ארוך
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.LongDescription)
+        </dd>
+        <dt>
+            מחיר
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.Price)
+        </dd>
+        <dt>
+            תאריך פרסום
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.Date)
+        </dd>
+        <dt>
+            תמונה 1
+        </dt>
+        <dd>
+            <img alt="אין תמונה" src="~/images/@Model.Product.Image1" height="120" width="150" />
+        </dd>
+        <dt>
+            תמונה 2
+        </dt>
+        <dd>
+            <img alt="אין תמונה" src="~/images/@Model.Product.Image2" height="120" width="150" />
+        </dd>
+        <dt>
+            תמונה 3
+        </dt>
+        <dd>
+            <img alt="אין תמונה" src="~/images/@Model.Product.Image3" height="120" width="150" />
+        </dd>
+        <dd>
+            פרטי המפרסם
+        </dd>
+        <dt>
+            Id
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.OwnerId)
+        </dd>
+        <dt>
+            שם פרטי
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.FirstName)
+        </dd>
+        <dt>
+            שם משפחה
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.LastName)
+        </dd>
+    </dl>
+</div>
+
+<a asp-controller="Home" asp-action="Index">
+    <input type="button" value="למסך הראשי" />
+</a>

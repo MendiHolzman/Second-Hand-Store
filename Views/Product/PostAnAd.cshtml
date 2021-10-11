@@ -1,0 +1,115 @@
+﻿@model MyAspProject.Models.UserProductViewModel
+
+@{
+    ViewBag.Title = "פרסם מודעה";
+    ViewBag.header = "פרסם מודעה";
+
+    string myCss1 = "";
+    string myCss2 = "";
+    string myCss3 = "";
+    string myCss4 = "";
+    string myCss5 = "";
+    string myCss6 = "";
+    string myCss7 = "";
+
+
+    if (TempData["ErrorsKeys"] != null)
+    {
+        foreach (var item in (List<string>)TempData["ErrorsKeys"])
+        {
+            switch (item)
+            {
+                case "Title":
+                    myCss1 = "try";
+                    break;
+                case "ShortDescription":
+                    myCss2 = "try";
+                    break;
+                case "LongDescription":
+                    myCss3 = "try";
+                    break;
+                case "Price":
+                    myCss4 = "try";
+                    break;
+                case "Image1":
+                    myCss5 = "try";
+                    break;
+                case "Image2":
+                    myCss6 = "try";
+                    break;
+                case "Image3":
+                    myCss7 = "try";
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+<br />
+<div>
+    <form method="post" asp-action="AdFormDataProcessing" enctype="multipart/form-data">>
+        <div asp-validation-summary="ModelOnly"></div>
+        <h3>"ID" יש למלא את כל השדות חוץ משדה </h3>
+        <br />
+        <div>
+            <div>
+                <p> ID </p>
+                <input type="text" readonly value="@Model.Product.Id" name="Id" id="Id" class="form-control">
+            </div>
+            <div>
+                <p> כותרת המוצר </p>
+                <input type="text" value="@Model.Product.Title" name="Title" id="Title" class="form-control @myCss1" placeholder="כותרת המוצר">
+            </div>
+            <div>
+                <p> תיאור קצר </p>
+                <input type="text" value="@Model.Product.ShortDescription" name="ShortDescription" id="ShortDescription" class="form-control @myCss2" placeholder="תיאור קצר">
+            </div>
+        </div>
+        <div>
+            <p> תיאור ארוך </p>
+            <input type="text" value="@Model.Product.LongDescription" name="LongDescription" class="form-control @myCss3" id="LongDescription" placeholder="תיאור ארוך">
+        </div>
+        <div>
+            <p> מחיר </p>
+            <div>
+                <input type="text" value="@Model.Product.Price" name="Price" class="form-control @myCss4" id="Price">
+            </div>
+        </div>
+        <div>
+            <p> תמונה 1 </p>
+            <div>
+                <input type="file" value="@Model.Product.FImage1" name="FImage1" class="form-control @myCss5" id="FImage1">
+            </div>
+            <div>
+                <p> תמונה 2 </p>
+                <div>
+                    <input type="file" value="@Model.Product.FImage2" name="FImage2" class="form-control @myCss6" id="FImage2">
+                </div>
+            </div>
+        </div>
+        <div>
+            <p> תמונה 3  </p>
+            <input type="file" value="@Model.Product.FImage3" name="FImage3" class="form-control @myCss7" id="FImage3">
+        </div>
+        <br />
+        <div>
+            <input id="Submit2" name="Submit" type="submit" value="פרסם" />
+        </div>
+        <br />
+    </form>
+    @Html.ValidationSummary()
+
+    @{
+        if (ViewData["errorForm"] != null)
+        {
+            @ViewData["errorForm"]
+        }
+    }
+
+</div>
+
+
+
+

@@ -1,0 +1,62 @@
+﻿
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @using Microsoft.AspNetCore.Http;
+    @{
+        Context.Response.Cookies.Append("CurrentTime", Program.CurrentPartOfTheDay()); 
+
+    if (Context.Request.Cookies["firstName"] != null)
+        {
+            <table border="0" cellpadding="2" cellspacing="2">
+                <tr>
+                    <td>
+                        <a asp-controller="account" asp-action="logout">
+                            <input type="button" value="התנתק">
+                        </a>
+                    </td>
+                    <td>
+                        <h3>
+                            @Context.Request.Cookies["CurrentTime"] @Context.Request.Cookies["firstName"] @Context.Request.Cookies["lastName"]
+                        </h3>
+                    </td>
+                </tr>
+            </table>
+        }
+        else
+        {
+            if (TempData["errorLogIn"] != null)
+            {
+                TempData["errorLogIn"].ToString();
+            }
+
+            <br />
+            <form method="post" asp-controller="account" asp-action="login">
+                <table border="0" cellpadding="2" cellspacing="2">
+                    <tr>
+                        <td><input type="text" value="@TempData["UserName"]" name="username" required></td>
+                        <td>שם משתמש</td>
+                    </tr>
+                    <tr>
+                        <td><input type="password" value="@TempData["Password"]" name="password" required></td>
+                        <td>סיסמא</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" value="התחבר">
+                            <a asp-controller="User" asp-action="Registration">
+                                <input type="button" value="הירשם">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        }
+
+    }
+
+</body>
+</html>

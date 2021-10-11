@@ -1,0 +1,100 @@
+﻿@model IEnumerable<MyAspProject.Models.Product>
+
+@{
+    ViewBag.Title = "ראשי";
+    ViewBag.header = "דף ראשי";
+
+    TempData["cart"] = null;
+}
+
+@{
+    if (TempData["errorLogIn"] != null)
+    {
+        <script>
+            alert("שם משתמש או סיסמא שגויים, בדוק שוב");
+        </script>
+    }
+
+    if (TempData["errorMoreDetails"] != null)
+    {
+        <script>
+            alert("יש שגיאה בהצגת פרטים נוספים");
+        </script>
+    }
+
+    if (TempData["addItemToShoppingCart"] != null)
+    {
+        <script>
+            alert("הפריט נוסף בהצלחה לסל הקניות");
+        </script>
+    }   
+}
+
+<div>
+    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">
+        <input type="button" value="מיין לפי כותרת" />
+    </a>
+
+    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">
+        <input type="button" value="מיין לפי תאריך פרסום" />
+    </a>
+</div>
+<div>
+    <p>
+        כל לחיצה על כפתור מיון מחליפה בין מיון בסדר עולה למיון בסדר יורד
+    </p>
+</div>
+
+
+@{
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="card border-dark mb-3" style="max-width: 18rem; width:16.5em; margin:10px;">
+                <p class="card-header bg-transparent border-secondary">
+                    @Html.DisplayFor(modelItem => item.Date)
+                </p>
+                @{
+                    if (item.Image1 != null)
+                    {
+                        <img class="card-img-top border-secondary"
+                             src="~/images/@item.Image1"
+                             alt="אין תמונה">
+                    }
+                    else if (item.Image2 != null)
+                    {
+                        <img class="card-img-top border-secondary"
+                             src="~/images/@item.Image2"
+                             alt="אין תמונה">
+                    }
+                    else if (item.Image3 != null)
+                    {
+                        <img class="card-img-top border-secondary"
+                             src="~/images/@item.Image3"
+                             alt="אין תמונה">
+                    }
+                    else
+                    {
+                        <img class="card-img-top border-secondary"
+                             src="#"
+                             alt="אין תמונה">
+                    }
+                }
+                <div class="card-body border-secondary card-footer">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                    <p class="card-text border-secondary">
+                        @Html.DisplayFor(modelItem => item.ShortDescription)
+                    </p>
+                    <div>
+                        @Html.ActionLink("פרטים נוספים", "MoreDetails", "Product", new { id = item.Id }, new { @class = "btn btn-primary border-secondary" })
+                        @Html.ActionLink("הוסף לסל", "AddToShoppingCart", "Product", new { id = item.Id }, new { @class = "btn btn-primary border-secondary" })
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+
+}
+

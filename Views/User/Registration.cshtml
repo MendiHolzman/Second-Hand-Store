@@ -1,0 +1,194 @@
+﻿
+@model MyAspProject.Models.User
+
+@{
+    string myCss1 = "";
+    string myCss2 = "";
+    string myCss3 = "";
+    string myCss4 = "";
+    string myCss5 = "";
+    string myCss6 = "";
+    string myCss7 = "";
+
+    if (TempData["ErrorsKeys"] != null)
+    {
+        foreach (var item in (List<string>)TempData["ErrorsKeys"])
+        {
+            switch (item)
+            {
+                case "FirstName":
+                    myCss1 = "try";
+                    break;
+                case "LastName":
+                    myCss2 = "try";
+                    break;
+                case "Email":
+                    myCss3 = "try";
+                    break;
+                case "Password":
+                    myCss4 = "try";
+                    break;
+                case "ConfirmPassword":
+                    myCss5 = "try";
+                    break;
+                case "UserName":
+                    myCss6 = "try";
+                    break;
+                case "Birthday":
+                    myCss7 = "try";
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+
+
+@{
+    if (Context.Request.Cookies["firstName"] != null)
+    {
+        ViewBag.Title = "עדכון פרטים";
+
+        ViewBag.header = "עדכון פרטים";
+
+        <br />
+        <div>
+            <form method="post" asp-action="Update">
+                <div asp-validation-summary="ModelOnly"></div>
+                <h3>"שם משתמש" ,"ID" - יש למלא את כל השדות חוץ משדות </h3>
+                <h4>לא ניתן לעדכן את שם המשתמש</h4>
+                <br />
+                <div>
+                    <div>
+                        <p> ID </p>
+                        <input type="text" readonly value="@Model.Id" name="Id" id="Id" class="form-control">
+                    </div>
+                    <div>
+                        <p> שם פרטי</p>
+                        <input type="text" value="@Model.FirstName" name="FirstName" id="FirstName" class="form-control @myCss1" placeholder="ישראל">
+                    </div>
+                    <div>
+                        <p> שם משפחה</p>
+                        <input type="text" value="@Model.LastName" name="LastName" id="LastName" class="form-control @myCss2" placeholder="ישראלי">
+                    </div>
+                </div>
+                <div>
+                    <label for="exampleFormControlInput1"> מייל</label>
+                    <input type="email" value="@Model.Email" name="Email" class="form-control @myCss3" id="Email" placeholder="name@example.com">
+                </div>
+                <div>
+                    <p> סיסמא</p>
+                    <div>
+                        <input type="text" value="@Model.Password" runat="server" name="Password" class="form-control @myCss4" id="Password">
+                    </div>
+                </div>
+                <div>
+                    <p> אימות סיסמא</p>
+                    <div>
+                        <input type="text" value="@Model.ConfirmPassword" runat="server" name="ConfirmPassword" class="form-control @myCss5" id="ConfirmPassword">
+                    </div>
+                    <br />
+                    <div>
+                        <p>שם משתמש</p>
+                        <div>
+                            <input type="text" readonly="readonly" value="@Model.UserName" name="UserName" class="form-control" id="UserName">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p> תאריך לידה </p>
+                    <input type="date" value="@Model.Birthday.ToString("yyyy-MM-dd")" class="@myCss7" id="Birthday" name="Birthday">
+                </div>
+                <br />
+                <div>
+                    <input id="Submit1" name="Submit" type="submit" value="עדכן" />
+                </div>
+                <br />
+            </form>
+            @Html.ValidationSummary()
+
+            @{
+                if (@ViewData["errorForm"] != null)
+                {
+                    @ViewData["errorForm"]
+                }
+            }
+
+        </div>
+    }
+    else
+    {
+        ViewBag.Title = "הרשמה";
+        ViewBag.header = "רישום לאתר";
+
+        <br />
+        <div>
+            <form method="post" asp-action="Create">
+                <div asp-validation-summary="ModelOnly"></div>
+                <h3>"ID" יש למלא את כל השדות חוץ משדה </h3>
+                <h4>לא ניתן לעדכן את שם המשתמש לאחר הרישום</h4>
+                <br />
+                <div>
+                    <div>
+                        <p> ID </p>
+                        <input type="text" readonly value="@Model.Id" name="Id" id="Id" class="form-control" placeholder="ישראל">
+                    </div>
+                    <div>
+                        <label> שם פרטי</label>
+                        <input type="text" value="@Model.FirstName" name="FirstName" id="FirstName" class="form-control @myCss1" placeholder="ישראל">
+                    </div>
+                    <div>
+                        <p> שם משפחה</p>
+                        <input type="text" value="@Model.LastName" name="LastName" id="LastName" class="form-control @myCss2" placeholder="ישראלי">
+                    </div>
+                </div>
+                <div>
+                    <label for="exampleFormControlInput1"> מייל</label>
+                    <input type="email" value="@Model.Email" name="Email" class="form-control @myCss3" id="exampleFormControlInput1" placeholder="name@example.com">
+                </div>
+                <div>
+                    <p> סיסמא</p>
+                    <div>
+                        <input type="text" value="@Model.Password" runat="server" name="Password" class="form-control @myCss4" id="Password">
+                    </div>
+                </div>
+                <div>
+                    <p> אימות סיסמא</p>
+                    <div>
+                        <input type="text" value="@Model.ConfirmPassword" runat="server" name="ConfirmPassword" class="form-control @myCss5" id="ConfirmPassword">
+                    </div>
+                    <br />
+                    <div>
+                        <p>שם משתמש</p>
+                        <div>
+                            <input type="text" value="@Model.UserName" name="UserName" class="form-control @myCss6" id="UserName">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p> תאריך לידה </p>
+                    <input type="date" value="@Model.Birthday.ToString("yyyy-MM-dd")"
+                           class="@myCss7" id="Birthday" name="Birthday">
+                </div>
+                <br />
+                <div>
+                    <input id="Submit1" name="Submit" type="submit" value="הירשם" />
+                </div>
+                <br />
+            </form>
+            @Html.ValidationSummary()
+
+            @{
+                if (@ViewData["errorForm"] != null)
+                {
+                    @ViewData["errorForm"]
+                }
+            }
+
+        </div>
+
+
+    }
+}

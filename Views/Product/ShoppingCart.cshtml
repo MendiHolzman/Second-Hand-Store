@@ -1,0 +1,171 @@
+﻿@model IEnumerable<MyAspProject.Models.Product>
+
+@{
+    ViewBag.Title = "סל קניות";
+    ViewBag.header = "סל קניות";
+
+    TempData["cart"] = "Yes";
+}
+
+@{
+
+    if (TempData["RemoveItem"] != null)
+    {
+        <script>
+            alert("הפריט הוסר מהסל בהצלחה");
+        </script>
+    }
+
+
+
+    <script>
+        var selfList = [];
+        function InitList(id) {
+            console.log(id)
+            return "";
+        }
+        // if product checked add to list
+        function ChangeObjectStatus(id, checkbox, price) {
+            var selfItem = selfList.find(x => x.id == id);
+            if (checkbox.checked) {
+                price = Number(price);
+                var model = {
+                    id: id,
+                    price: price
+                };
+                selfList.push(model);
+            }
+            else {
+                if (selfItem == selfList[0]) {
+                    selfList.shift();
+                }
+                else {
+                    selfList.splice(selfList.indexOf(selfItem), 1);
+                }
+            }
+            var price = CalculatePrices();
+
+        }
+        // Calculate the price or member price
+        function CalculatePrices() { // V
+            var obj = document.getElementById("totalDiv");
+            var userObj = document.getElementById("totalUserDiv");
+            var totalPrice = 0;
+            selfList.forEach(x => totalPrice += x.price);
+            obj.innerHTML = totalPrice + " ₪";
+            if (userObj) {
+                userObj.innerHTML = totalPrice - (totalPrice / 10) + "₪";
+            }
+            return totalPrice;
+
+        }
+    </script>
+
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="card border-dark mb-3" style="max-width: 18rem; width:17em; margin:10px;">
+                <p class="card-header bg-transparent border-secondary">
+                    @Html.DisplayFor(modelItem => item.Date)
+                </p>
+                @{
+                    if (item.Image1 != null)
+                    {
+                        <img class="card-img-top border-secondary"
+                             src="~/images/@item.Image1"
+                             alt="אין תמונה">
+                    }
+                    else if (item.Image2 != null)
+                    {
+                        <img class="card-img-top border-secondary"
+                             src="~/images/@item.Image2"
+                             alt="אין תמונה">
+                    }
+                    else if (item.Image3 != null)
+                    {
+                        <img class="card-img-top border-secondary"
+                             src="~/images/@item.Image3"
+                             alt="אין תמונה">
+                    }
+                    else
+                    {
+                        <img class="card-img-top border-secondary"
+                             src="#"
+                             alt="אין תמונה">
+                    }
+                }
+
+                <div class="card-body border-secondary card-footer">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                    <p class="card-text border-secondary">
+                        @Html.DisplayFor(modelItem => item.ShortDescription)
+                    </p>
+                    <div>
+                        @Html.ActionLink("פרטים נוספים", "MoreDetails", "Product", new { id = item.Id }, new { @class = "btn btn-primary border-secondary" })
+                        @Html.ActionLink("הסר מהסל", "RemoveFromBasket", "Product", new { id = item.Id }, new { @class = "btn btn-primary border-secondary" })
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="mycheckbox{@item.Id}" onchange="ChangeObjectStatus(@item.Id,this,@item.Price)" />
+            <div>
+                <script>
+                                var model = {
+                                    id: @item.Id;
+                                    price: @item.Price;
+                        };
+                        selfList.push(model);
+                        selfList.push(@item.Id);
+                </script>
+            </div>
+
+        }
+    </div>
+    <div class="col-sm-3">
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    מחיר רגיל
+                </div>
+                <div class="card-body">
+                    <div id="totalDiv">
+                        <script>CalculatePrices()</script>
+                    </div>
+                </div>
+            </div>
+            <br />
+            @if (Context.Request.Cookies["firstName"] != null)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        מחיר למשתמש קיים
+                    </div>
+                    <div class="card-body">
+
+
+                        <div id="totalUserDiv">
+                            <script>CalculatePrices()</script>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <a class="btn btn-danger" id="buyBtn" onclick="GoToBuying()">
+            קנייה
+            <script>
+                function GoToBuying() {
+                    if (selfList.length <= 0) {
+                        alert("עדיין אין מוצרים בסל")
+                    }
+                    else {
+                        var listStr = "";
+                        selfList.forEach(x => listStr += x.id + " ");
+                        alert("תודה שקנית מאיתנו, יום מקסים")
+                        window.location = "/Product/Buying?selfList=" + listStr;
+                    }
+                }
+            </script>
+        </a>
+    </div>
+}
+

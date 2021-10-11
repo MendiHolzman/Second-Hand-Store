@@ -1,0 +1,19 @@
+﻿.center {
+    border: 5px solid #FFFF00;
+    text-align: center;
+}
+
+.try {
+    border-color: red;
+}
+
+#btm {
+    margin-bottom: 200px;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}
+
